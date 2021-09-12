@@ -6,3 +6,4 @@ Pytorch chess
 
 usefull links
 https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project
+https://justinfagnani.github.io/chessboard-element/#start
