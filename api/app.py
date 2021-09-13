@@ -28,3 +28,7 @@ def move(source, target):
     except ValueError as e:
         return {'validMove': 'False', 'error' : str(e)}
     return {'validMove': 'True', 'error' : 'False'}
+
+@app.route('/moverandom')
+def move_random():
+    return {'validMove': 'True', 'error' : 'False'}

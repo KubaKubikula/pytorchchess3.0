@@ -5,23 +5,31 @@ import './App.css';
 import 'chessboard-element';
 
 function App () {
-  const [currentTime, setCurrentTime] = useState(0);
-  let actualState = 'start';
-  let logareamessages = '';
 
   useEffect(() => {
     const board = document.querySelector('chess-board');
     const startButton = document.getElementById('startBtn');
     const logarea = document.getElementById('logarea');
+    const moveRandomButton = document.getElementById('moveRandomBtn');
 
     fetch('/actualstate').then(res => res.json()).then(data => {
-      actualState = data.actualstate;
+      board.setAttribute('position', data.actualstate);
     });
 
     startButton.addEventListener('click',
     () => {
       board.start();
       fetch('/restart');
+    });
+
+    moveRandomButton.addEventListener('click',
+    () => {
+      alert("random movement");
+      fetch('/moverandom')
+      .then(res => res.json())
+      .then(data => {
+        alert("move");
+      });
     });
 
     board.addEventListener('drop', (e) => {
@@ -51,13 +59,12 @@ function App () {
         <div style={{float :'left'}}>
           <strong>White: Human</strong><br />
           Black: Human<br />
-          <textarea id="logarea" rows="30" cols="40" value={logareamessages} >
+          <textarea id="logarea" rows="30" cols="40">
           
           </textarea>
         </div>
         <div style={{width : '400px', margin: '0 auto'}}>
           <chess-board id="board3"
-            position={actualState}
             draggable-pieces
             >
           </chess-board>
@@ -65,9 +72,10 @@ function App () {
         <div style={{clear:'both'}}></div>
       </div>
       <button id="startBtn">Start Position</button>
+      <button id="moveRandomBtn">Move Random</button>
       <header className="App-header">
 
-        <p></p>
+        <p>Chillout</p>
       </header>
     </div>
   );
