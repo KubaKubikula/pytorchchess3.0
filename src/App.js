@@ -49,6 +49,7 @@ function App () {
           // MOVE BACK IS NOT VALID
           board.move(target + '-' + source);
         } else {
+          // CHECK IF IS NOT OVER 
           fetch('/gameover')
           .then(res => res.json())
           .then(data => {
@@ -64,7 +65,7 @@ function App () {
             board.move(data.move.substring(0, 2) + '-' + data.move.substring(2, 4));
             logarea.innerHTML = logarea.innerHTML + data.error + '\n\n';
           });
-
+          // CHECK IF IS NOT OVER 
           fetch('/gameover')
           .then(res => res.json())
           .then(data => {

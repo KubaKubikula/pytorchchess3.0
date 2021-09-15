@@ -24,8 +24,8 @@ def restart():
 def move(source, target):
     try:
         if is_valid_movement(source, target) != True:
-        return {'validMove': 'False', 'error' : 'wrong movement'}
-        board.push_san(target)
+            return {'validMove': 'False', 'error' : 'wrong movement'}
+        board.push_san(source + target)
     except ValueError as e:
         return {'validMove': 'False', 'error' : str(e)}
     return {'validMove': 'True', 'error' : 'False'}
@@ -33,7 +33,7 @@ def move(source, target):
 @app.route('/moverandom')
 def move_random():
     move = random.choice(list(board.legal_moves))
-    print(str(move))
+    #print(str(move))
     board.push_san(str(move))
     return {'validMove': 'True', 'error' : 'False', 'move' : str(move)}
 
@@ -44,5 +44,17 @@ def game_over():
     if board.is_checkmate():
         isGameOver = 'True'
         message = 'checkmate'
-
+    elif board.is_stalemate():
+        isGameOver = 'True'
+        message = 'stalemate'
+    elif board.is_insufficient_material():
+        isGameOver = 'True'
+        message = 'insuficient material'
+    elif board.is_fivefold_repetition():
+        isGameOver = 'True'
+        message = '5 repetition'
     return {'isGameOver': isGameOver, 'message' : message }
+
+
+
+
