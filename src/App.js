@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
 
 import 'chessboard-element';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App () {
 
@@ -43,18 +43,22 @@ function App () {
       console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
       fetch('/move/' + source + '/' + target).then(res => res.json()).then(data => {
-        logarea.innerHTML = logarea.innerHTML + data.error + '\n\n';
+        let message = data.move;
+        if (data.error !== 'False') {
+          message = message + ' - ' + data.error;
+        }
+        logarea.innerHTML = logarea.innerHTML + '\n' + message;
 
-        if(data.validMove == 'False') {
-          // MOVE BACK IS NOT VALID
+        if (data.validMove === 'False') {
+          // MOVE BACK IS NOT VALID - it's buggy
           board.move(target + '-' + source);
         } else {
           // CHECK IF IS NOT OVER 
           fetch('/gameover')
           .then(res => res.json())
           .then(data => {
-            if(data.isGameOver == 'True') {
-              logarea.innerHTML = logarea.innerHTML + data.message + '\n\n';
+            if(data.isGameOver === 'True') {
+              logarea.innerHTML = logarea.innerHTML + '\n' + data.message;
             }
           });
 
@@ -63,14 +67,14 @@ function App () {
           .then(res => res.json())
           .then(data => {
             board.move(data.move.substring(0, 2) + '-' + data.move.substring(2, 4));
-            logarea.innerHTML = logarea.innerHTML + data.error + '\n\n';
+            logarea.innerHTML = logarea.innerHTML + '\n' + data.move ;
           });
           // CHECK IF IS NOT OVER 
           fetch('/gameover')
           .then(res => res.json())
           .then(data => {
-            if(data.isGameOver == 'True') {
-              logarea.innerHTML = logarea.innerHTML + data.message + '\n\n';
+            if(data.isGameOver === 'True') {
+              logarea.innerHTML = logarea.innerHTML + '\n' + data.message ;
             }
           });
         }
@@ -84,12 +88,12 @@ function App () {
         <h1>&lt;chess-board&gt; and React</h1>
         <div style={{float :'left'}}>
           <strong>White: Human</strong><br />
-          Black: Human<br />
-          <textarea id="logarea" rows="30" cols="40">
+          Black: AI computer<br />
+          <textarea id="logarea" rows="20" cols="40">
           
           </textarea>
         </div>
-        <div style={{width : '400px', margin: '0 auto'}}>
+        <div style={{width : '400px', margin: '0 auto', paddingTop: '47px'}}>
           <chess-board id="board3"
             draggable-pieces
             >
@@ -97,8 +101,11 @@ function App () {
         </div>
         <div style={{clear:'both'}}></div>
       </div>
-      <button id="startBtn">Start Position</button>
-      <button id="moveRandomBtn">Move Random</button>
+      <br />
+      <button class="btn btn-primary" id="startBtn">Start Position</button>&nbsp;
+      <button class="btn btn-secondary" id="moveRandomBtn">Move Random</button>
+      <br />
+      <br />
       <header className="App-header">
 
         <p>Chillout</p>

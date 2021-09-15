@@ -24,11 +24,11 @@ def restart():
 def move(source, target):
     try:
         if is_valid_movement(source, target) != True:
-            return {'validMove': 'False', 'error' : 'wrong movement'}
+            return {'validMove': 'False', 'error' : 'wrong movement', 'move' : source + target}
         board.push_san(source + target)
     except ValueError as e:
-        return {'validMove': 'False', 'error' : str(e)}
-    return {'validMove': 'True', 'error' : 'False'}
+        return {'validMove': 'False', 'error' : str(e), 'move' : source + target}
+    return {'validMove': 'True', 'error' : 'False', 'move' : source + target}
 
 @app.route('/moverandom')
 def move_random():
