@@ -1,5 +1,6 @@
 from flask import Flask
 import chess
+import random
 
 app = Flask(__name__)
 board = chess.Board()
@@ -23,7 +24,7 @@ def restart():
 def move(source, target):
     try:
         if is_valid_movement(source, target) != True:
-            return {'validMove': 'False', 'error' : 'wrong movement'}
+        return {'validMove': 'False', 'error' : 'wrong movement'}
         board.push_san(target)
     except ValueError as e:
         return {'validMove': 'False', 'error' : str(e)}
@@ -31,4 +32,17 @@ def move(source, target):
 
 @app.route('/moverandom')
 def move_random():
-    return {'validMove': 'True', 'error' : 'False'}
+    move = random.choice(list(board.legal_moves))
+    print(str(move))
+    board.push_san(str(move))
+    return {'validMove': 'True', 'error' : 'False', 'move' : str(move)}
+
+@app.route('/gameover')
+def game_over():
+    isGameOver = 'False'
+    message = ''
+    if board.is_checkmate():
+        isGameOver = 'True'
+        message = 'checkmate'
+
+    return {'isGameOver': isGameOver, 'message' : message }

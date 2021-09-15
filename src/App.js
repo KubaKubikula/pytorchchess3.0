@@ -24,11 +24,11 @@ function App () {
 
     moveRandomButton.addEventListener('click',
     () => {
-      alert("random movement");
       fetch('/moverandom')
       .then(res => res.json())
       .then(data => {
-        alert("move");
+        board.move(data.move.substring(0, 2) + '-' + data.move.substring(2, 4));
+        logarea.innerHTML = logarea.innerHTML + data.error + '\n\n';
       });
     });
 
@@ -46,7 +46,32 @@ function App () {
         logarea.innerHTML = logarea.innerHTML + data.error + '\n\n';
 
         if(data.validMove == 'False') {
+          // MOVE BACK IS NOT VALID
           board.move(target + '-' + source);
+        } else {
+          fetch('/gameover')
+          .then(res => res.json())
+          .then(data => {
+            if(data.isGameOver == 'True') {
+              logarea.innerHTML = logarea.innerHTML + data.message + '\n\n';
+            }
+          });
+
+          // COMPUTER MOVE
+          fetch('/moverandom')
+          .then(res => res.json())
+          .then(data => {
+            board.move(data.move.substring(0, 2) + '-' + data.move.substring(2, 4));
+            logarea.innerHTML = logarea.innerHTML + data.error + '\n\n';
+          });
+
+          fetch('/gameover')
+          .then(res => res.json())
+          .then(data => {
+            if(data.isGameOver == 'True') {
+              logarea.innerHTML = logarea.innerHTML + data.message + '\n\n';
+            }
+          });
         }
       });
     });
