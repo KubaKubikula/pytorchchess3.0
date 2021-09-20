@@ -29,3 +29,7 @@ https://cs.wikipedia.org/wiki/Minimax_(algoritmus)
 
 http://web.cs.ucla.edu/~rosen/161/notes/alphabeta.html
 
+deployment
+
+https://adamraudonis.medium.com/how-to-deploy-a-website-on-aws-with-docker-flask-react-from-scratch-d0845ebd9da4
+
