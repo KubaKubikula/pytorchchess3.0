@@ -1,5 +1,7 @@
 <h1>Pytorch chess</h1>
 
+Složitost [***-------] 30%
+
 Frontend reactJs localhost:3000
 
 Backed python Flask api localhost:5000
